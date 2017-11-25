@@ -14,6 +14,10 @@ class Simulation:
     def __init__(self, config_filename, auto_trace, ped_trace, button_trace):
         # initialize time and queue
         self.time = 0
+
+        # note on priority queue:
+        # each entry is of the form (time, id, handler_function).
+        # if ID is None, handler function doesn't take an ID (like green_expires)
         self.q = PriorityQueue()
 
         # set up trace readers
@@ -21,7 +25,13 @@ class Simulation:
         self.ped_tr = TraceReader(ped_trace)
         self.button_tr = TraceReader(button_trace)
 
-    def read_config_variables():
+        # set up simulation state
+        setup_sim()
+
+        # run simulation
+        run_sim()
+
+    def read_config_variables(self):
         # read in variables from input file
         config = configparser.ConfigParser()
         config.read(config_filename)
@@ -42,7 +52,9 @@ class Simulation:
         self.ped_speed_min   = sim_params.getfloat('ped_speed_min')
         self.ped_speed_max   = sim_params.getfloat('ped_speed_max')
 
-    def setup_sim():
+    def setup_sim(self):
+        # set up the initial state of the simulation
+        return
 
     #
     # pRNG functions
@@ -60,11 +72,11 @@ class Simulation:
     #
     # SIM execution functions
     #
-    def run_sim():
+    def run_sim(self):
         print "STARTING SIM"
         return
 
-    def sim_complete():
+    def sim_complete(self):
         print "SIM COMPLETE"
         return
 
