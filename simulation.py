@@ -11,8 +11,11 @@ class Simulation:
     #
     # setup functions
     #
-    def __init__(self, config_filename, auto_trace, ped_trace, button_trace):
-        # initialize time and queue
+    def __init__(self, n, config_filename, auto_trace, ped_trace, button_trace):
+        # N is the number of vehicles and pedestrians to create
+        self.n = n
+
+        # initialize time
         self.time = 0
 
         # note on priority queue:
