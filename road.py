@@ -13,7 +13,10 @@ class StoplightState(Enum):
     GREEN_WAITING = 5
 
 class Road:
-    def __init__(self, t_red, t_yellow, t_green):
+    def __init__(self, current_time, t_red, t_yellow, t_green):
+        # store current time
+        self.last_update = current_time
+
         # time values for red/yellow/green
         self.t_red = t_red
         self.t_yellow = t_yellow
@@ -21,6 +24,7 @@ class Road:
 
         # start timer at green
         self.timer = t_green
+
         # initial stoplight state is GREEN_EXPIRED
         self.stoplight = StoplightState.GREEN_EXPIRED
 
@@ -30,4 +34,6 @@ class Road:
 
         # crosswalk is represented as a queue
         self.crosswalk = queue.Queue()
+
+        print "[ROAD] created at time {}".format(current_time)
 
