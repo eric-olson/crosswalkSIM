@@ -12,7 +12,7 @@ class Event(Enum):
     AUTO_EXIT = 8
     PED_EXIT = 9
 
-def auto_arrival():
+def auto_arrival(auto_id):
     # add new auto to queue (what about direction?)
 
     # compute expected exit time
@@ -23,26 +23,56 @@ def auto_arrival():
 
     print("auto_arrival")
 
-def ped_arrival():
+def ped_arrival(ped_id):
+    # calculate time to arrive at button & create event
+
+    # precompute total travel time, minus delay
+
     print("ped_arrival")
 
-def ped_at_button():
+def ped_at_button(ped_id):
+    # determine if pedestrian will push button
+
+    # create impatient event
+
     print("ped_at_button")
 
-def ped_impatient():
+def ped_impatient(ped_id):
+    # check if ped has crossed the street yet
+
+    # push the button
+
     print("ped_impatient")
 
 def green_expires():
+    # update state based on if walk button has been pushed
+
     print("green_expires")
 
 def yellow_expires():
+    # update state
+
+    # delay vehicles that would be in the crosswalk
+
     print("yellow_expires")
 
 def red_expires():
+    # update state
+
+    # clean up crosswalk? what needs to be done here?
+
     print("red_expires")
 
-def auto_exit():
+def auto_exit(auto_id):
+    # store total travel time
+
+    # remove auto from simulation
+
     print("auto_exit")
 
-def ped_exit():
+def ped_exit(ped_id):
+    # store total travel time
+
+    # remove ped from simulation
+
     print("ped_exit")
