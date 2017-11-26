@@ -17,10 +17,10 @@ class Auto:
         self.accel = accel
 
         # print debug message
-        print "[AUTO] created with id: {}, speed: {}, accel: {}, delayed: {}".format(self.num,
-                                                                                     self.speed,
-                                                                                     self.accel,
-                                                                                     self.delayed)
+        print ("[AUTO] created with id: {}, speed: {}, accel: {}, delayed: {}".format(self.num,
+                                                                                      self.speed,
+                                                                                      self.accel,
+                                                                                      self.delayed))
 
     def calc_travel_time(self, distance):
         # calculate expected travel time

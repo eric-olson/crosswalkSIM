@@ -29,11 +29,20 @@ class Road:
         self.stoplight = StoplightState.GREEN_EXPIRED
 
         # each road direction is a queue
-        self.road_east = queue.Queue()
-        self.road_west = queue.Queue()
+        self.east = []
+        self.west = []
 
         # crosswalk is represented as a queue
         self.crosswalk = queue.Queue()
 
-        print "[ROAD] created at time {}".format(current_time)
+        print ("[ROAD] created at time {}".format(current_time))
+
+    def add_vehicle(self, auto):
+        # add a vehicle to correct road direction (even east, odd west)
+        if (auto.num % 2 == 0):
+            print ("[ROAD] adding vehicle to east lane")
+            self.east.append(auto)
+        else:
+            print ("[ROAD] adding vehicle to west lane")
+            self.west.append(auto)
 
