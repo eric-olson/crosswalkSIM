@@ -21,58 +21,58 @@ def auto_arrival(auto_id, q):
 
     # create next arrival event
 
-    print("auto_arrival")
+    print("[EVENT] auto_arrival")
 
 def ped_arrival(ped_id, q):
     # calculate time to arrive at button & create event
 
     # precompute total travel time, minus delay
 
-    print("ped_arrival")
+    print("[EVENT] ped_arrival")
 
 def ped_at_button(ped_id, q):
     # determine if pedestrian will push button
 
     # create impatient event
 
-    print("ped_at_button")
+    print("[EVENT] ped_at_button")
 
 def ped_impatient(ped_id, q):
     # check if ped has crossed the street yet
 
     # push the button
 
-    print("ped_impatient")
+    print("[EVENT] ped_impatient")
 
 def green_expires(q):
     # update state based on if walk button has been pushed
 
-    print("green_expires")
+    print("[EVENT] green_expires")
 
 def yellow_expires(q):
     # update state
 
     # delay vehicles that would be in the crosswalk
 
-    print("yellow_expires")
+    print("[EVENT] yellow_expires")
 
 def red_expires(q):
     # update state
 
     # clean up crosswalk? what needs to be done here?
 
-    print("red_expires")
+    print("[EVENT] red_expires")
 
 def auto_exit(auto_id, q):
     # store total travel time
 
     # remove auto from simulation
 
-    print("auto_exit")
+    print("[EVENT] auto_exit")
 
 def ped_exit(ped_id, q):
     # store total travel time
 
     # remove ped from simulation
 
-    print("ped_exit")
+    print("[EVENT] ped_exit")
