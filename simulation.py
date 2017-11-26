@@ -55,9 +55,9 @@ class Simulation:
         self.t_yellow        = sim_params.getint('t_yellow')
         self.t_green         = sim_params.getint('t_green')
         self.ped_rate        = sim_params.getint('ped_rate')
-        self.ped_mu          = 1.0 / self.ped_rate
+        self.ped_mu          = 60 / self.ped_rate
         self.auto_rate       = sim_params.getint('auto_rate')
-        self.auto_mu         = 1.0 / self.auto_rate
+        self.auto_mu         = 60 / self.auto_rate
         self.auto_length     = sim_params.getint('auto_length')
         self.auto_speed_min  = sim_params.getint('auto_speed_min')
         self.auto_speed_max  = sim_params.getint('auto_speed_max')
