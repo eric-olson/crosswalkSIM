@@ -76,11 +76,25 @@ class Simulation:
     # SIM execution functions
     #
     def run_sim(self):
-        print "STARTING SIM"
+        print "[SIM]  STARTING SIM..."
+        while not q.empty():
+            # pop the next event from queue
+            next_event = q.get()
+            print "[SIM]  next event: {}".format(next_event)
+            # unpack the event tuple
+            # event tuple format: (time, function, params)
+            self.time = next_event[0]
+            eventhandler = next_event[1]
+            params = next_event[2]
+
+            # call the event handler function
+            eventhandler(*params)
+            print "[SIM]  done with event"
+
         return
 
     def sim_complete(self):
-        print "SIM COMPLETE"
+        print "[SIM]  SIM COMPLETE"
         return
 
 
