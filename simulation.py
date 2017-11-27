@@ -94,7 +94,7 @@ class Simulation:
         state_change = self.road.push_button(self.time)
 
         # add timer expiration event if light changed to yellow
-        if state_change == StoplightState.YELLOW:
+        if state_change == road.StoplightState.YELLOW:
             print("[SIM]  adding yellow_expires event")
             next_expire = (sim.time + self.road.t_yellow, event.yellow_expires, ())
             sim.q.put(next_expire)
