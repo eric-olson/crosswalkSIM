@@ -82,6 +82,7 @@ def ped_at_button(sim, ped_id):
     print("[EVENT] ped_at_button")
 
     # determine if pedestrian will push button
+    print("[EVENT] stoplight state: {}".format(sim.road.state))
     # case 1: stoplight state is not red -> crosswalk is NO WALK
     if sim.road.state != StoplightState.RED:
         num_waiting = sim.road.num_peds_waiting()
@@ -94,11 +95,13 @@ def ped_at_button(sim, ped_id):
             thresh = 1.0 / (num_waiting + 1)
 
         if uniform < thresh:
+            print("[EVENT] pushing button")
             sim.push_button()
 
     # create impatient event if ped might be held up for >1min
     elif sim.road.state == StoplightState.GREEN \
       or sim.road.state == StoplightState.GREEN_EXPIRED:
+        print("[EVENT] creating ped_impatient event")
         impatient_event = (sim.time + 60, ped_impatient, (ped_id, ))
         sim.q.put(impatient_event)
 
