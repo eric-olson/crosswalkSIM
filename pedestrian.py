@@ -13,7 +13,7 @@ class Pedestrian:
 
     def calc_travel_time(self, travel_distance):
         # calculate expected travel time
-        travel_time = time_from_dist(travel_distance)
+        travel_time = self.time_from_dist(travel_distance)
         self.travel_time = travel_time
         print("[PED]  calculated travel_time = {} s".format(travel_time))
 
@@ -22,7 +22,7 @@ class Pedestrian:
 
     def calc_crosswalk_time(self, dist_to_crosswalk):
         # calculate when ped will arrive at crosswalk
-        crosswalk_time = time_from_dist(dist_to_crosswalk)
+        crosswalk_time = self.time_from_dist(dist_to_crosswalk)
         self.crosswalk_time = crosswalk_time
         print("[PED]  calculated crosswalk_time = {} s".format(crosswalk_time))
 
@@ -31,7 +31,7 @@ class Pedestrian:
 
     def calc_cross_time(self, street_width):
         # calculate time taken to cross street
-        cross_time = time_from_dist(street_width)
+        cross_time = self.time_from_dist(street_width)
         self.cross_time = cross_time
         print("[PED]  calculated cross_time = {} s".format(cross_time))
 
