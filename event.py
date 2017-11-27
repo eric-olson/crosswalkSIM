@@ -145,7 +145,7 @@ def yellow_expires(sim):
 
     # determine which pedestrians will cross street and
     # delay vehicles that would be in the crosswalk
-    sim.road.red_light()
+    sim.road.red_light(sim.time)
 
 
 

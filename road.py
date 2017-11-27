@@ -93,7 +93,7 @@ class Road:
     def ped_arrives(self, ped_id):
         print("[ROAD] moving ped #{} to crosswalk".format(ped_id))
         # move ped from sidewalk to crosswalk queue
-        ped = sidewalk.pop(ped_id)
+        ped = self.sidewalk.pop(ped_id)
         self.crosswalk.put(ped)
 
     def num_peds_waiting(self):
