@@ -30,9 +30,8 @@ class Road:
         # initial stoplight state is GREEN_EXPIRED
         self.state = StoplightState.GREEN_EXPIRED
 
-        # each road direction
-        self.east_road = []
-        self.west_road = []
+        # road is a dictionary keyed on auto ID
+        self.road = {}
         # sidewalk is a dictionary keyed on pedestrian ID
         self.sidewalk = {}
 
@@ -89,16 +88,15 @@ class Road:
 
         print("[ROAD] {} peds can still cross street".format(self.remaining_crossings))
 
-        # TODO: determine vehicle delays
+        # determine if vehicles will be delayed
+        for num, auto in self.road.items():
+            auto.red_light(time, self.t_red)
+
 
     def add_auto(self, auto):
-        # add a vehicle to correct road direction (even east, odd west)
-        if (auto.num % 2 == 0):
-            print ("[ROAD] adding vehicle to east lane")
-            self.east_road.append(auto)
-        else:
-            print ("[ROAD] adding vehicle to west lane")
-            self.west_road.append(auto)
+        # add a vehicle to road dictionary
+        print ("[ROAD] adding vehicle to road")
+        self.road[auto.num] = auto
 
     def add_ped(self, ped):
         # add pedestrian to sidewalk dictionary

@@ -24,16 +24,17 @@ def auto_arrival(sim, auto_id):
     new_auto = auto.Auto(auto_id,
                          sim.auto_speed_prng,
                          sim.time,
+                         sim.auto_length,
                          sim.auto_accel)
 
     sim.road.add_auto(new_auto)
 
-    # compute expected exit time
+    # compute expected travel time
     # TODO: store this for welford reasons probably
     new_auto.calc_travel_time(sim.road_length)
 
     # precompute time at crosswalk
-    new_auto.calc_crosswalk_time(sim.distance_to_crosswalk, sim.crosswalk_width)
+    new_auto.calc_crosswalk_time(sim.distance_to_crosswalk, sim.crosswalk_width, sim.time)
 
     # create next arrival event
     uniform = sim.auto_tr.get_next()
@@ -83,8 +84,6 @@ def ped_arrival(sim, ped_id):
 
 def ped_at_button(sim, ped_id):
     print("[EVNT] ped_at_button")
-    # tell road that pedestrian has arrived & should move to crosswalk
-    sim.road.ped_arrives(ped_id)
 
     # determine if pedestrian will push button
     print("[EVNT] stoplight state: {}".format(sim.road.state))
@@ -105,6 +104,9 @@ def ped_at_button(sim, ped_id):
         if uniform < thresh:
             print("[EVNT] pushing button")
             sim.push_button()
+
+    # tell road that pedestrian has arrived & should move to crosswalk
+    sim.road.ped_arrives(ped_id)
 
     # create impatient event if ped might be held up for >1min
     if sim.road.state == StoplightState.GREEN or sim.road.state == StoplightState.GREEN_EXPIRED:
