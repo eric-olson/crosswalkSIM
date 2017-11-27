@@ -96,8 +96,8 @@ class Simulation:
         # add timer expiration event if light changed to yellow
         if state_change == road.StoplightState.YELLOW:
             print("[SIM]  adding yellow_expires event")
-            next_expire = (sim.time + self.road.t_yellow, event.yellow_expires, ())
-            sim.q.put(next_expire)
+            next_expire = (self.time + self.road.t_yellow, event.yellow_expires, ())
+            self.q.put(next_expire)
 
 
     #
