@@ -93,8 +93,7 @@ def ped_at_button(sim, ped_id):
             thresh = 1.0 / (num_waiting + 1)
 
         if uniform < thresh:
-            sim.push_button()
-
+            sim.road.push_button()
 
     # create impatient event if ped might be held up for >1min
     elif sim.road.state == StoplightState.GREEN \
@@ -104,11 +103,16 @@ def ped_at_button(sim, ped_id):
 
 
 def ped_impatient(sim, ped_id):
-    # check if ped has crossed the street yet
+    print("[EVENT] ped_impatient")
+    # check if the signal has changed in the last minute
+    # if so, ignore impatient event
+    if sim.road.last_walk + 60 < sim.time:
+        print("[EVENT] ped_impatient: cancelled")
+        return
 
     # push the button
+    sim.road.push_button()
 
-    print("[EVENT] ped_impatient")
 
 def green_expires(sim):
     # update state based on if walk button has been pushed
