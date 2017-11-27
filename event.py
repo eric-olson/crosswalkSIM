@@ -3,6 +3,7 @@ import math
 from enum import Enum
 
 import auto
+import pedestrian
 
 class Event(Enum):
     AUTO_ARRIVAL = 1
@@ -24,7 +25,7 @@ def auto_arrival(sim, auto_id):
                          sim.time,
                          sim.auto_accel)
 
-    sim.road.add_vehicle(new_auto)
+    sim.road.add_auto(new_auto)
 
     # compute expected exit time
     # TODO: store this for welford reasons probably
@@ -37,20 +38,43 @@ def auto_arrival(sim, auto_id):
     uniform = sim.auto_tr.get_next()
     exponential = -1 * sim.auto_mu * math.log(uniform)
     next_time = sim.time + exponential
+    next_id = auto_id + 2
 
-    if auto_id < 10:
-        next_arrival = (next_time, auto_arrival, (auto_id + 2, ))
+    if next_id <= sim.n:
+        next_arrival = (next_time, auto_arrival, (next_id, ))
         sim.q.put(next_arrival)
 
     return
 
 
 def ped_arrival(sim, ped_id):
-    # calculate time to arrive at button & create event
-
-    # precompute total travel time, minus delay
-
     print("[EVENT] ped_arrival")
+    # create pedestrian and add to queue
+    new_ped = pedestrian.Pedestrian(ped_id,
+                                    sim.ped_speed_prng,
+                                    sim.time)
+
+    sim.road.add_ped(new_ped)
+
+    # calculate time to arrive at button & create event
+    arrive_at_crosswalk = new_ped.calc_crosswalk_time(sim.block_width)
+    button_event = (arrive_at_crosswalk, ped_at_button, (ped_id, ))
+
+    # precompute total expected travel time, minus delay
+    new_ped.calc_travel_time(sim.block_width + sim.street_width)
+
+    # create next arrival event
+    uniform = sim.ped_tr.get_next()
+    exponential = -1 * sim.ped_mu * math.log(uniform)
+    next_time = sim.time + exponential
+    next_id = ped_id + 2
+
+    if next_id <= sim.n:
+        next_arrival = (next_time, ped_arrival, (next_id, ))
+        sim.q.put(next_arrival)
+
+    return
+
 
 def ped_at_button(sim, ped_id):
     # determine if pedestrian will push button

@@ -1,13 +1,13 @@
 
 class Pedestrian:
-    def __init__(self, num, prng, current_time_prng):
+    def __init__(self, num, prng, current_time):
         self.num = num
 
         self.arrival = current_time
 
         self.speed = prng()
 
-        print "[PED]  created with id: {}, speed: {}".format(self.num, self.speed)
+        print ("[PED]  created with id: {}, speed: {}".format(self.num, self.speed))
 
     def calc_travel_time(self, distance):
         # calculate expected travel time
@@ -25,3 +25,5 @@ class Pedestrian:
         # when light turns red, ped can likely cross
 
         # return delay time? if crossed?
+        return
+

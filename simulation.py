@@ -67,16 +67,19 @@ class Simulation:
 
         # compute road length (i.e. total auto travel distance)
         self.road_length = 7 * self.block_width + 6 * self.street_width
-        # comput distance to crosswalk
+        # compute distance to crosswalk
         self.distance_to_crosswalk = 7/2 * self.block_width + 3 * self.street_width - self.crosswalk_width / 2
-
 
     def setup_sim(self):
         # TODO: remove this placeholder for first arrivals
         arr1 = (1, event.auto_arrival, (1, ))
         arr2 = (2, event.auto_arrival, (2, ))
+        arr3 = (3, event.ped_arrival, (1, ))
+        arr4 = (4, event.ped_arrival, (2, ))
         self.q.put(arr2)
         self.q.put(arr1)
+        self.q.put(arr3)
+        self.q.put(arr4)
 
         # set up the initial state of the simulation
         return
@@ -113,7 +116,7 @@ class Simulation:
 
             # call the event handler function
             eventhandler(*params)
-            print ("[SIM]  done with event")
+            print ("[SIM]  done with event\n")
 
         return
 

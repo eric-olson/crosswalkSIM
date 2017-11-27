@@ -37,7 +37,7 @@ class Road:
 
         print ("[ROAD] created at time {}".format(current_time))
 
-    def add_vehicle(self, auto):
+    def add_auto(self, auto):
         # add a vehicle to correct road direction (even east, odd west)
         if (auto.num % 2 == 0):
             print ("[ROAD] adding vehicle to east lane")
@@ -46,3 +46,6 @@ class Road:
             print ("[ROAD] adding vehicle to west lane")
             self.west.append(auto)
 
+    def add_ped(self, ped):
+        # add a pedestrian to correct road direction
+        return
