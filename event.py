@@ -107,8 +107,7 @@ def ped_at_button(sim, ped_id):
             sim.push_button()
 
     # create impatient event if ped might be held up for >1min
-    elif sim.road.state == StoplightState.GREEN \
-      or sim.road.state == StoplightState.GREEN_EXPIRED:
+    if sim.road.state == StoplightState.GREEN or sim.road.state == StoplightState.GREEN_EXPIRED:
         print("[EVNT] creating ped_impatient event")
         impatient_event = (sim.time + 60, ped_impatient, (ped_id, ))
         sim.q.put(impatient_event)
