@@ -77,15 +77,16 @@ class Road:
         # determine pedestrian crossings. don't have to worry about slow peds
         # in this part- only if a pedestrian arrives during a walk signal
         max_crossings = 20
+        self.remaining_crossings = 0
         for x in range(0, max_crossings):
+            if self.crosswalk.empty():
+                # store remaining allowed pedestrian crossings
+                self.remaining_crossings = max_crossings - x
+                break;
             ped = self.crosswalk.get()
             print("[ROAD] telling pedestrian {} to cross street".format(ped.num))
             ped.cross_street(time)
-            if self.crosswalk.empty():
-                break;
 
-        # store remaining allowed pedestrian crossings
-        self.remaining_crossings = max_crossings - x - 1
         print("[ROAD] {} peds can still cross street".format(self.remaining_crossings))
 
         # TODO: determine vehicle delays

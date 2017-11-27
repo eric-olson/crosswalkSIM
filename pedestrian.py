@@ -20,9 +20,9 @@ class Pedestrian:
         # return calculated travel time (not clock time) for welford
         return travel_time
 
-    def calc_crosswalk_time(self, dist_to_crosswalk):
+    def calc_crosswalk_time(self, dist_to_crosswalk, time):
         # calculate when ped will arrive at crosswalk
-        crosswalk_time = self.time_from_dist(dist_to_crosswalk)
+        crosswalk_time = self.time_from_dist(dist_to_crosswalk) + time
         self.crosswalk_time = crosswalk_time
         print("[PED]  calculated crosswalk_time = {} s".format(crosswalk_time))
 
@@ -45,7 +45,7 @@ class Pedestrian:
     def cross_street(self, current_time):
         print("[PED]  crossing street")
         # calculate delay time due to waiting at crosswalk
-        self.delay = current_time - self.arrival
+        self.delay = current_time - self.crosswalk_time
         self.crossed_street = True
         print("[PED]  calculated delay: {}".format(self.delay))
         # return delay time
