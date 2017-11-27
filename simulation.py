@@ -85,6 +85,17 @@ class Simulation:
         return
 
     #
+    # helper functions
+    #
+    def push_button(self):
+        print("[SIM]  button pushed")
+
+        self.road.push_button(self.time)
+
+        # TODO: add timer expiration event if needed
+
+
+    #
     # pRNG functions
     #
     def auto_speed_prng(self):

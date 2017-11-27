@@ -93,7 +93,7 @@ def ped_at_button(sim, ped_id):
             thresh = 1.0 / (num_waiting + 1)
 
         if uniform < thresh:
-            sim.road.push_button()
+            sim.push_button()
 
     # create impatient event if ped might be held up for >1min
     elif sim.road.state == StoplightState.GREEN \
@@ -111,28 +111,42 @@ def ped_impatient(sim, ped_id):
         return
 
     # push the button
-    sim.road.push_button()
+    sim.push_button()
 
 
 def green_expires(sim):
-    # update state based on if walk button has been pushed
-
     print("[EVENT] green_expires")
+    # update state based on if walk button has been pushed
+    # if not pushed, just move to expired state
+    if sim.road.state == StoplightState.GREEN:
+        sim.road.update_state(StoplightState.GREEN_EXPIRED, sim.time)
+
+    # if button was already pushed, trigger yellow light
+    elif sim.road.state == StoplightState.GREEN_WAITING:
+        sim.road.update_state(StoplightState.YELLOW, sim.time)
+        # add yellow_expires event
+        next_expire = (sim.time + sim.road.t_yellow, yellow_expires, ())
+        sim.q.put(next_expire)
+
 
 def yellow_expires(sim):
-    # update state
+    print("[EVENT] yellow_expires")
+    # update state to RED; this is also WALK
+    sim.road.update_state(StoplightState.RED, sim.time)
+
+    #TODO: crosswalk logic
 
     # delay vehicles that would be in the crosswalk
 
-    print("[EVENT] yellow_expires")
 
 def red_expires(sim):
-    # update state
+    print("[EVENT] red_expires")
+    # update state to GREEN
+    sim.road.update_state(StoplightState.GREEN, sim.time)
 
     # clean up crosswalk? what needs to be done here?
     # some pedestrians will push button (case c in assignment)
 
-    print("[EVENT] red_expires")
 
 def auto_exit(sim, auto_id):
     # store total travel time

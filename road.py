@@ -24,7 +24,7 @@ class Road:
         self.t_yellow = t_yellow
         self.t_green = t_green
 
-        # start timer at green
+        # start timer at green (TODO: is timer storage even necessary?)
         self.timer = t_green
 
         # initial stoplight state is GREEN_EXPIRED
