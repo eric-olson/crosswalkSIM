@@ -42,9 +42,12 @@ class Pedestrian:
         return distance / self.speed
 
 
-    def light_red(self, current_time, t_red):
-        # when light turns red, ped can likely cross
-
-        # return delay time? if crossed?
-        return
+    def cross_street(self, current_time):
+        print("[PED]  crossing street")
+        # calculate delay time due to waiting at crosswalk
+        self.delay = current_time - self.arrival
+        self.crossed_street = True
+        print("[PED]  calculated delay: {}".format(self.delay))
+        # return delay time
+        return self.delay
 

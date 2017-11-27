@@ -65,6 +65,9 @@ def ped_arrival(sim, ped_id):
     # precompute total expected travel time, minus delay
     new_ped.calc_travel_time(sim.block_width + sim.street_width)
 
+    # precompute crossing time
+    new_ped.calc_cross_time(sim.street_width)
+
     # create next arrival event
     uniform = sim.ped_tr.get_next()
     exponential = -1 * sim.ped_mu * math.log(uniform)
