@@ -33,9 +33,8 @@ class Road:
         # each road direction
         self.east_road = []
         self.west_road = []
-        # each sidewalk direction
-        self.east_sidewalk = []
-        self.west_sidewalk = []
+        # sidewalk is a dictionary keyed on pedestrian ID
+        self.sidewalk = {}
 
         # crosswalk is represented as a queue
         self.crosswalk = queue.Queue()
@@ -87,14 +86,15 @@ class Road:
             self.west_road.append(auto)
 
     def add_ped(self, ped):
-        # add a pedestrian to correct road direction (even east, odd west)
-        if (ped.num % 2 == 0):
-            print ("[ROAD] adding ped to east side")
-            self.east_sidewalk.append(ped)
-        else:
-            print ("[ROAD] adding ped to west side")
-            self.west_sidewalk.append(ped)
-        return
+        # add pedestrian to sidewalk dictionary
+        print ("[ROAD] adding ped to sidewalk")
+        self.sidewalk[ped.num] = ped
+
+    def ped_arrives(self, ped_id):
+        print("[ROAD] moving ped #{} to crosswalk".format(ped_id))
+        # move ped from sidewalk to crosswalk queue
+        ped = sidewalk.pop(ped_id)
+        self.crosswalk.put(ped)
 
     def num_peds_waiting(self):
         return self.crosswalk.qsize()

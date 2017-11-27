@@ -80,6 +80,8 @@ def ped_arrival(sim, ped_id):
 
 def ped_at_button(sim, ped_id):
     print("[EVNT] ped_at_button")
+    # tell road that pedestrian has arrived & should move to crosswalk
+    sim.road.ped_arrives(ped_id)
 
     # determine if pedestrian will push button
     print("[EVNT] stoplight state: {}".format(sim.road.state))
