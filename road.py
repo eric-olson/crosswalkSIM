@@ -61,7 +61,9 @@ class Road:
         return
 
     def update_state(self, new_state, time):
-        # TODO: add check for illegal state transitions
+        # TODO: add check for illegal state transitions?
+
+        print("[ROAD] changing state to {}".format(new_state))
         self.state = new_state
         self.last_update = time
 

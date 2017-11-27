@@ -18,7 +18,7 @@ class Event(Enum):
     PED_EXIT = 9
 
 def auto_arrival(sim, auto_id):
-    print("[EVENT] auto_arrival")
+    print("[EVNT] auto_arrival")
 
     # add new auto to queue (what about direction?)
     new_auto = auto.Auto(auto_id,
@@ -49,7 +49,7 @@ def auto_arrival(sim, auto_id):
 
 
 def ped_arrival(sim, ped_id):
-    print("[EVENT] ped_arrival")
+    print("[EVNT] ped_arrival")
     # create pedestrian and add to queue
     new_ped = pedestrian.Pedestrian(ped_id,
                                     sim.ped_speed_prng,
@@ -79,10 +79,10 @@ def ped_arrival(sim, ped_id):
 
 
 def ped_at_button(sim, ped_id):
-    print("[EVENT] ped_at_button")
+    print("[EVNT] ped_at_button")
 
     # determine if pedestrian will push button
-    print("[EVENT] stoplight state: {}".format(sim.road.state))
+    print("[EVNT] stoplight state: {}".format(sim.road.state))
     # case 1: stoplight state is not red -> crosswalk is NO WALK
     if sim.road.state != StoplightState.RED:
         num_waiting = sim.road.num_peds_waiting()
@@ -95,23 +95,23 @@ def ped_at_button(sim, ped_id):
             thresh = 1.0 / (num_waiting + 1)
 
         if uniform < thresh:
-            print("[EVENT] pushing button")
+            print("[EVNT] pushing button")
             sim.push_button()
 
     # create impatient event if ped might be held up for >1min
     elif sim.road.state == StoplightState.GREEN \
       or sim.road.state == StoplightState.GREEN_EXPIRED:
-        print("[EVENT] creating ped_impatient event")
+        print("[EVNT] creating ped_impatient event")
         impatient_event = (sim.time + 60, ped_impatient, (ped_id, ))
         sim.q.put(impatient_event)
 
 
 def ped_impatient(sim, ped_id):
-    print("[EVENT] ped_impatient")
+    print("[EVNT] ped_impatient")
     # check if the signal has changed in the last minute
     # if so, ignore impatient event
     if sim.road.last_walk + 60 < sim.time:
-        print("[EVENT] ped_impatient: cancelled")
+        print("[EVNT] ped_impatient: cancelled")
         return
 
     # push the button
@@ -119,7 +119,7 @@ def ped_impatient(sim, ped_id):
 
 
 def green_expires(sim):
-    print("[EVENT] green_expires")
+    print("[EVNT] green_expires")
     # update state based on if walk button has been pushed
     # if not pushed, just move to expired state
     if sim.road.state == StoplightState.GREEN:
@@ -134,7 +134,7 @@ def green_expires(sim):
 
 
 def yellow_expires(sim):
-    print("[EVENT] yellow_expires")
+    print("[EVNT] yellow_expires")
     # update state to RED; this is also WALK
     sim.road.update_state(StoplightState.RED, sim.time)
     # create red_expires event
@@ -148,7 +148,7 @@ def yellow_expires(sim):
 
 
 def red_expires(sim):
-    print("[EVENT] red_expires")
+    print("[EVNT] red_expires")
     # update state to GREEN
     sim.road.update_state(StoplightState.GREEN, sim.time)
 
@@ -161,11 +161,11 @@ def auto_exit(sim, auto_id):
 
     # remove auto from simulation
 
-    print("[EVENT] auto_exit")
+    print("[EVNT] auto_exit")
 
 def ped_exit(sim, ped_id):
     # store total travel time
 
     # remove ped from simulation
 
-    print("[EVENT] ped_exit")
+    print("[EVNT] ped_exit")
