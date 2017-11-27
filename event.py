@@ -151,6 +151,9 @@ def red_expires(sim):
     print("[EVNT] red_expires")
     # update state to GREEN
     sim.road.update_state(StoplightState.GREEN, sim.time)
+    # create green_expires event
+    next_expire = (sim.time + sim.road.t_green, green_expires, ())
+    sim.q.put(next_expire)
 
     # clean up crosswalk? what needs to be done here?
     # some pedestrians will push button (case c in assignment)
