@@ -45,7 +45,7 @@ class Road:
     def push_button(self, time):
         print("[ROAD] button pushed at time {}".format(time))
 
-        if self.state == StoplightState.WALK:
+        if self.state == StoplightState.GREEN:
             print("[ROAD] changing state to GREEN_WAITING")
             self.update_state(StoplightState.GREEN_WAITING, time)
             return self.state
@@ -89,5 +89,5 @@ class Road:
         return
 
     def num_peds_waiting(self):
-        return len(crosswalk)
+        return self.crosswalk.qsize()
 
