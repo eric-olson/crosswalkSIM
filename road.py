@@ -43,8 +43,21 @@ class Road:
         print ("[ROAD] created at time {}".format(current_time))
 
     def push_button(self, time):
-        # TODO: button push -> state change logic
         print("[ROAD] button pushed at time {}".format(time))
+
+        if self.state == StoplightState.WALK:
+            print("[ROAD] changing state to GREEN_WAITING")
+            self.update_state(StoplightState.GREEN_WAITING, time)
+            return self.state
+
+        elif self.state == StoplightState.GREEN_EXPIRED:
+            print("[ROAD] changing light to yellow")
+            self.update_state(StoplightState.YELLOW, time)
+            return self.state
+
+        else:
+            print("[ROAD] no state change")
+
         return
 
     def update_state(self, new_state, time):

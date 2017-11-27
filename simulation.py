@@ -90,23 +90,41 @@ class Simulation:
     def push_button(self):
         print("[SIM]  button pushed")
 
-        self.road.push_button(self.time)
+        # tell road to push button, save state change
+        state_change = self.road.push_button(self.time)
 
-        # TODO: add timer expiration event if needed
+        # add timer expiration event if light changed to yellow
+        if state_change == StoplightState.YELLOW:
+            print("[SIM]  adding yellow_expires event")
+            next_expire = (sim.time + self.road.t_yellow, event.yellow_expires, ())
+            sim.q.put(next_expire)
 
 
     #
     # pRNG functions
     #
     def auto_speed_prng(self):
-        # TODO: read trace file
-        return 26.8
+        # get a Uniform(0,1) value
+        x = auto_tr.get_next()
+        # convert to Uniform(a,b)
+        a = self.auto_speed_min
+        b = self.auto_speed_max
+
+        return a + (b - a) * x
+
     def ped_speed_prng(self):
-        # TODO: read trace file
-        return 3.0
+        # get a Uniform(0,1) value
+        x = ped_tr.get_next()
+        # convert to Uniform(a,b)
+        a = self.ped_speed_min
+        b = self.ped_speed_max
+
+        return a + (b - a) * x
+
     def button_prng(self):
-        # TODO: read trace file
-        return 0.5
+        # no conversion needed for button. Uniform(0,1) is fine
+        return button_tr.get_next()
+
 
     #
     # SIM execution functions
