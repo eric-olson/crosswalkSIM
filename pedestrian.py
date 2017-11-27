@@ -13,23 +13,33 @@ class Pedestrian:
 
     def calc_travel_time(self, travel_distance):
         # calculate expected travel time
+        travel_time = time_from_dist(travel_distance)
+        self.travel_time = travel_time
+        print("[PED]  calculated travel_time = {} s".format(travel_time))
 
-        # return calculated travel time (not clock time)
-        return
+        # return calculated travel time (not clock time) for welford
+        return travel_time
 
     def calc_crosswalk_time(self, dist_to_crosswalk):
         # calculate when ped will arrive at crosswalk
+        crosswalk_time = time_from_dist(dist_to_crosswalk)
+        self.crosswalk_time = crosswalk_time
+        print("[PED]  calculated crosswalk_time = {} s".format(crosswalk_time))
 
-        # return expected arrival time
-        return
+        # return expected arrival time for event creation
+        return crosswalk_time
 
     def calc_cross_time(self, street_width):
         # calculate time taken to cross street
-        return
+        cross_time = time_from_dist(street_width)
+        self.cross_time = cross_time
+        print("[PED]  calculated cross_time = {} s".format(cross_time))
+
+        return cross_time
 
     def time_from_dist(self, distance):
         # helper to calculate travel times based on distance and speed
-        return
+        return distance / self.speed
 
 
     def light_red(self, current_time, t_red):
