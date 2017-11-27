@@ -141,9 +141,10 @@ def yellow_expires(sim):
     next_expire = (sim.time + sim.road.t_red, red_expires, ())
     sim.q.put(next_expire)
 
-    #TODO: crosswalk logic
-
+    # determine which pedestrians will cross street and
     # delay vehicles that would be in the crosswalk
+    sim.road.red_light()
+
 
 
 

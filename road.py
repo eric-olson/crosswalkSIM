@@ -71,6 +71,12 @@ class Road:
         if new_state == StoplightState.GREEN:
             last_walk = time
 
+    def red_light(self, time):
+        # determine pedestrian crossings
+        max_crossings = 20
+
+        # TODO: determine vehicle delays
+
     def add_auto(self, auto):
         # add a vehicle to correct road direction (even east, odd west)
         if (auto.num % 2 == 0):
