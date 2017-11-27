@@ -105,7 +105,7 @@ class Simulation:
     #
     def auto_speed_prng(self):
         # get a Uniform(0,1) value
-        x = auto_tr.get_next()
+        x = self.auto_tr.get_next()
         # convert to Uniform(a,b)
         a = self.auto_speed_min
         b = self.auto_speed_max
@@ -114,7 +114,7 @@ class Simulation:
 
     def ped_speed_prng(self):
         # get a Uniform(0,1) value
-        x = ped_tr.get_next()
+        x = self.ped_tr.get_next()
         # convert to Uniform(a,b)
         a = self.ped_speed_min
         b = self.ped_speed_max
@@ -123,7 +123,7 @@ class Simulation:
 
     def button_prng(self):
         # no conversion needed for button. Uniform(0,1) is fine
-        return button_tr.get_next()
+        return self.button_tr.get_next()
 
 
     #
