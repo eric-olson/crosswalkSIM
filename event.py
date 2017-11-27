@@ -90,8 +90,10 @@ def ped_at_button(sim, ped_id):
     print("[EVNT] stoplight state: {}".format(sim.road.state))
     # case 1: stoplight state is not red -> crosswalk is NO WALK
     if sim.road.state != StoplightState.RED:
+        print("[EVNT] testing if ped should push button")
         num_waiting = sim.road.num_peds_waiting()
         uniform = sim.button_tr.get_next()
+        print("[EVNT] {} peds waiting at button".format(num_waiting))
 
         # calculate the probability button will be pushed
         if num_waiting == 0:
@@ -99,6 +101,7 @@ def ped_at_button(sim, ped_id):
         else:
             thresh = 1.0 / (num_waiting + 1)
 
+        print("[EVNT] random: {}, thresh: {}".format(uniform, thresh))
         if uniform < thresh:
             print("[EVNT] pushing button")
             sim.push_button()

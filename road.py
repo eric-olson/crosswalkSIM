@@ -71,16 +71,16 @@ class Road:
             self.last_walk = time
 
     def red_light(self, time):
+        print("[ROAD] red light started")
         # store start time of red light
         self.last_red = time
         # determine pedestrian crossings. don't have to worry about slow peds
         # in this part- only if a pedestrian arrives during a walk signal
         max_crossings = 20
         for x in range(0, max_crossings):
-            ped = crosswalk.get()
-            if ped.cross_time < self.t_red:
-                print("[ROAD] telling pedestrian {} to cross street".format(ped.num))
-                ped.cross_street()
+            ped = self.crosswalk.get()
+            print("[ROAD] telling pedestrian {} to cross street".format(ped.num))
+            ped.cross_street(time)
             if self.crosswalk.empty():
                 break;
 
