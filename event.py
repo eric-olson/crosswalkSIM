@@ -60,6 +60,7 @@ def ped_arrival(sim, ped_id):
     # calculate time to arrive at button & create event
     arrive_at_crosswalk = new_ped.calc_crosswalk_time(sim.block_width)
     button_event = (arrive_at_crosswalk, ped_at_button, (ped_id, ))
+    sim.q.put(button_event)
 
     # precompute total expected travel time, minus delay
     new_ped.calc_travel_time(sim.block_width + sim.street_width)
