@@ -85,6 +85,15 @@ class Simulation:
         return
 
     #
+    # helper functions
+    #
+
+    def push_button(self):
+        # define what happens when the crosswalk button is pushed
+        print ("[SIM]  button pushed")
+
+
+    #
     # pRNG functions
     #
     def auto_speed_prng(self):

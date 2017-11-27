@@ -4,6 +4,7 @@ from enum import Enum
 
 import auto
 import pedestrian
+from road import StoplightState
 
 class Event(Enum):
     AUTO_ARRIVAL = 1
@@ -77,11 +78,30 @@ def ped_arrival(sim, ped_id):
 
 
 def ped_at_button(sim, ped_id):
-    # determine if pedestrian will push button
-
-    # create impatient event
-
     print("[EVENT] ped_at_button")
+
+    # determine if pedestrian will push button
+    # case 1: stoplight state is not red -> crosswalk is NO WALK
+    if sim.road.state != StoplightState.RED:
+        num_waiting = sim.road.num_peds_waiting()
+        uniform = sim.button_tr.get_next()
+
+        # calculate the probability button will be pushed
+        if num_waiting == 0:
+            thresh = 15.0 / 16.0
+        else:
+            thresh = 1.0 / (num_waiting + 1)
+
+        if uniform < thresh:
+            sim.push_button()
+
+
+    # create impatient event if ped might be held up for >1min
+    elif sim.road.state == StoplightState.GREEN \
+      or sim.road.state == StoplightState.GREEN_EXPIRED:
+        impatient_event = (sim.time + 60, ped_impatient, (ped_id, ))
+        sim.q.put(impatient_event)
+
 
 def ped_impatient(sim, ped_id):
     # check if ped has crossed the street yet
@@ -106,6 +126,7 @@ def red_expires(sim):
     # update state
 
     # clean up crosswalk? what needs to be done here?
+    # some pedestrians will push button (case c in assignment)
 
     print("[EVENT] red_expires")
 

@@ -26,11 +26,14 @@ class Road:
         self.timer = t_green
 
         # initial stoplight state is GREEN_EXPIRED
-        self.stoplight = StoplightState.GREEN_EXPIRED
+        self.state = StoplightState.GREEN_EXPIRED
 
-        # each road direction is a queue
-        self.east = []
-        self.west = []
+        # each road direction
+        self.east_road = []
+        self.west_road = []
+        # each sidewalk direction
+        self.east_sidewalk = []
+        self.west_sidewalk = []
 
         # crosswalk is represented as a queue
         self.crosswalk = queue.Queue()
@@ -41,11 +44,20 @@ class Road:
         # add a vehicle to correct road direction (even east, odd west)
         if (auto.num % 2 == 0):
             print ("[ROAD] adding vehicle to east lane")
-            self.east.append(auto)
+            self.east_road.append(auto)
         else:
             print ("[ROAD] adding vehicle to west lane")
-            self.west.append(auto)
+            self.west_road.append(auto)
 
     def add_ped(self, ped):
-        # add a pedestrian to correct road direction
+        # add a pedestrian to correct road direction (even east, odd west)
+        if (ped.num % 2 == 0):
+            print ("[ROAD] adding ped to east side")
+            self.east_sidewalk.append(ped)
+        else:
+            print ("[ROAD] adding ped to west side")
+            self.west_sidewalk.append(ped)
         return
+
+    def num_peds_waiting(self):
+        return len(crosswalk)
