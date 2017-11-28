@@ -1,0 +1,7 @@
+- Welford's Equations: simulation.py, auto_delay and ped_delay functions
+
+- Exponential variate: event.py, auto_arrival and ped_arrival functions (lines 45 and 78)
+
+- Arrival processes: these are started in simulation.py, setup_sim function
+
+- Priority Queue: simulation.py, __init__ (line 29)
