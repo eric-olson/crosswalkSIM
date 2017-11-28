@@ -37,6 +37,7 @@ class Road:
 
         # crosswalk is represented as a queue
         self.crosswalk = queue.Queue()
+        self.too_slow = queue.Queue()
 
         print ("[ROAD] created at time {}".format(current_time))
 
@@ -89,9 +90,16 @@ class Road:
         print("[ROAD] {} peds can still cross street".format(self.remaining_crossings))
 
         # determine if vehicles will be delayed
+        print("[ROAD] checking vehicles for delay")
         for num, auto in self.road.items():
             auto.red_light(time, self.t_red)
 
+    def green_light(self):
+        # move too_slow members to main crosswalk queue
+        print("[ROAD] moving too_slow peds to crosswalk")
+        while not self.too_slow.empty():
+            ped = self.too_slow.get()
+            self.crosswalk.put(ped)
 
     def add_auto(self, auto):
         # add a vehicle to road dictionary
@@ -103,13 +111,25 @@ class Road:
         print ("[ROAD] adding ped to sidewalk")
         self.sidewalk[ped.num] = ped
 
-    def ped_arrives(self, ped_id):
-        print("[ROAD] moving ped #{} to crosswalk".format(ped_id))
+    def ped_arrives(self, ped_id, time):
+        print("[ROAD] ped has arrived at crosswalk")
         # move ped from sidewalk to crosswalk queue
         ped = self.sidewalk.pop(ped_id)
-        self.crosswalk.put(ped)
 
-        # TODO: cross street if allowed
+        # cross street if allowed
+        if self.state == StoplightState.RED and self.crosswalk.empty():
+            remaining_time = time - self.last_red
+            print("[ROAD] stoplight is red, checking if ped can cross in {} s".format(remaining_time))
+            if ped.cross_time < remaining_time:
+                print("[ROAD] telling ped #{} to cross street".format(ped_id))
+                ped.cross_street(time)
+            else:
+                print("[ROAD] not enough time for ped #{} to cross street".format(ped_id))
+                self.too_slow.put(ped)
+        else:
+            print("[ROAD] moving ped #{} to crosswalk".format(ped_id))
+            self.crosswalk.put(ped)
+
 
     def num_peds_waiting(self):
         return self.crosswalk.qsize()

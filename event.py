@@ -106,7 +106,7 @@ def ped_at_button(sim, ped_id):
             sim.push_button()
 
     # tell road that pedestrian has arrived & should move to crosswalk
-    sim.road.ped_arrives(ped_id)
+    sim.road.ped_arrives(ped_id, sim.time)
 
     # create impatient event if ped might be held up for >1min
     if sim.road.state == StoplightState.GREEN or sim.road.state == StoplightState.GREEN_EXPIRED:
@@ -155,8 +155,6 @@ def yellow_expires(sim):
     sim.road.red_light(sim.time)
 
 
-
-
 def red_expires(sim):
     print("[EVNT] red_expires")
     # update state to GREEN
@@ -165,8 +163,19 @@ def red_expires(sim):
     next_expire = (sim.time + sim.road.t_green, green_expires, ())
     sim.q.put(next_expire)
 
-    # clean up crosswalk? what needs to be done here?
+    # clean up after red light
+    sim.road.green_light()
+
     # some pedestrians will push button (case c in assignment)
+    remaining = sim.road.num_peds_waiting()
+    print("[EVNT] red light expired, {} remaining peds".format(remaining))
+    for i in range(0, remaining):
+        uniform = sim.button_tr.get_next()
+        thresh = 15.0 / 16.0
+        print("[EVNT] random: {}, thresh: {}".format(uniform, thresh))
+        if uniform < thresh:
+            print("[EVNT] pushing button")
+            sim.push_button()
 
 
 def auto_exit(sim, auto_id):

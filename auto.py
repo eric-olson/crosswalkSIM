@@ -22,8 +22,8 @@ class Auto:
         self.length = length
 
         # print debug message
-        print ("[AUTO] created with id: {}, speed: {}, \
-                accel: {}, length: {} delayed: {}".format(self.num,
+        print ("[AUTO] created with id: {}, speed: {}, " \
+               "accel: {}, length: {} delayed: {}".format(self.num,
                                                           self.speed,
                                                           self.accel,
                                                           self.length,
