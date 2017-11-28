@@ -60,7 +60,8 @@ class Auto:
         red_end = current_time + t_red
         # check if auto will NOT be delayed. if not, return zero delay
         if self.exit_crosswalk < current_time or self.enter_crosswalk > red_end:
-            return 0.0
+            # auto could still enter crosswalk, no delay can be proven yet
+            return None
 
         print("[AUTO] delaying auto {}".format(self.num))
         delayed = True

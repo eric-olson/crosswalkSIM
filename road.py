@@ -78,6 +78,7 @@ class Road:
         # in this part- only if a pedestrian arrives during a walk signal
         max_crossings = 20
         self.remaining_crossings = 0
+        ped_delays = []
         for x in range(0, max_crossings):
             if self.crosswalk.empty():
                 # store remaining allowed pedestrian crossings
@@ -85,14 +86,17 @@ class Road:
                 break;
             ped = self.crosswalk.get()
             print("[ROAD] telling pedestrian {} to cross street".format(ped.num))
-            ped.cross_street(time)
+            delay = ped.cross_street(time)
+            ped_delays.append(delay)
 
         print("[ROAD] {} peds can still cross street".format(self.remaining_crossings))
 
         # determine if vehicles will be delayed
         print("[ROAD] checking vehicles for delay")
         for num, auto in self.road.items():
-            auto.red_light(time, self.t_red)
+            delay = auto.red_light(time, self.t_red)
+
+        return ped_delays
 
     def green_light(self):
         # move too_slow members to main crosswalk queue
@@ -122,7 +126,8 @@ class Road:
             print("[ROAD] stoplight is red, checking if ped can cross in {} s".format(remaining_time))
             if ped.cross_time < remaining_time:
                 print("[ROAD] telling ped #{} to cross street".format(ped_id))
-                ped.cross_street(time)
+                delay = ped.cross_street(time)
+                return delay
             else:
                 print("[ROAD] not enough time for ped #{} to cross street".format(ped_id))
                 self.too_slow.put(ped)

@@ -30,8 +30,12 @@ def auto_arrival(sim, auto_id):
     sim.road.add_auto(new_auto)
 
     # compute expected travel time
-    # TODO: store this for welford reasons probably
     new_auto.calc_travel_time(sim.road_length)
+
+    # create exit event
+    exit_time = sim.time + new_auto.travel_time
+    exit_event = (exit_time, auto_exit, (auto_id, ))
+    sim.q.put(exit_event)
 
     # precompute time at crosswalk
     new_auto.calc_crosswalk_time(sim.distance_to_crosswalk, sim.crosswalk_width, sim.time)
@@ -106,7 +110,9 @@ def ped_at_button(sim, ped_id):
             sim.push_button()
 
     # tell road that pedestrian has arrived & should move to crosswalk
-    sim.road.ped_arrives(ped_id, sim.time)
+    delay = sim.road.ped_arrives(ped_id, sim.time)
+    if delay:
+        sim.ped_delay(delay)
 
     # create impatient event if ped might be held up for >1min
     if sim.road.state == StoplightState.GREEN or sim.road.state == StoplightState.GREEN_EXPIRED:
@@ -152,7 +158,11 @@ def yellow_expires(sim):
 
     # determine which pedestrians will cross street and
     # delay vehicles that would be in the crosswalk
-    sim.road.red_light(sim.time)
+    ped_delays = sim.road.red_light(sim.time)
+
+    # update welford equations for pedestrians
+    for delay in ped_delays:
+        sim.ped_delay(delay)
 
 
 def red_expires(sim):
@@ -179,9 +189,12 @@ def red_expires(sim):
 
 
 def auto_exit(sim, auto_id):
-    # store total travel time
+    auto = sim.road.road[auto_id]
 
-    # remove auto from simulation
+    if(auto.delayed):
+        sim.auto_delay(auto.delay)
+    else:
+        sim.auto_delay(0.0)
 
     print("[EVNT] auto_exit")
 

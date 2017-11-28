@@ -39,6 +39,13 @@ class Simulation:
         # create a road
         self.road = road.Road(0, self.t_red, self.t_yellow, self.t_green)
 
+        # initialize welford variables
+        self.avg_auto_delay = 0
+        self.auto_i = 0
+        self.auto_delay_variance = 0
+        self.avg_ped_delay = 0
+        self.ped_i = 0
+
         # set up simulation state
         self.setup_sim()
 
@@ -72,10 +79,10 @@ class Simulation:
 
     def setup_sim(self):
         # TODO: remove this placeholder for first arrivals
-        arr1 = (1, event.auto_arrival, (1, ))
-        arr2 = (2, event.auto_arrival, (2, ))
-        arr3 = (3, event.ped_arrival, (1, ))
-        arr4 = (4, event.ped_arrival, (2, ))
+        arr1 = (1, event.auto_arrival, (0, ))
+        arr2 = (2, event.auto_arrival, (1, ))
+        arr3 = (3, event.ped_arrival, (0, ))
+        arr4 = (4, event.ped_arrival, (1, ))
         self.q.put(arr2)
         self.q.put(arr1)
         self.q.put(arr3)
@@ -83,6 +90,27 @@ class Simulation:
 
         # set up the initial state of the simulation
         return
+
+    #
+    # welford functions
+    #
+    def auto_delay(self, delay):
+        # update avg auto delay and sample variance based on welford equation
+        print("[SIM]  updating auto delay & variance")
+        self.auto_i += 1
+        auto_i = self.auto_i
+        auto_delay_variance = self.auto_delay_variance
+        avg_auto_delay = self.avg_auto_delay
+
+        self.auto_delay_variance = auto_delay_variance + ( (auto_i-1) / auto_i ) * ( (delay - avg_auto_delay) ** 2)
+        self.avg_auto_delay = avg_auto_delay + (1 / auto_i) * (delay - avg_auto_delay)
+
+    def ped_delay(self, delay):
+        # update avg ped delay based on welford equation
+        print("[SIM]  updating ped delay")
+        self.ped_i += 1
+        self.avg_ped_delay = self.avg_ped_delay + (1 / self.ped_i) * (delay - self.avg_ped_delay)
+
 
     #
     # helper functions
@@ -147,10 +175,15 @@ class Simulation:
             eventhandler(*params)
             print ("[SIM]  done with event\n")
 
+        self.sim_complete()
         return
 
     def sim_complete(self):
-        print ("[SIM]  SIM COMPLETE")
+        print ("\n[SIM]  SIM COMPLETE")
+        variance = self.auto_delay_variance / self.auto_i
+        print ("OUTPUT auto delay {}".format(self.avg_auto_delay))
+        print ("OUTPUT auto variance {}".format(variance))
+        print ("OUTPUT ped delay {}".format(self.avg_ped_delay))
         return
 
 
