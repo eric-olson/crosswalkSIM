@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+
+import sys
+
+import simulation as s
+
+if __name__ == '__main__' :
+    if len(sys.argv) != 5:
+        print("Incorrect number of arguments, 4 expected")
+        exit(1)
+
+    try:
+        sim = s.Simulation(int(sys.argv[1]), 'config.ini', sys.argv[2], sys.argv[3], sys.argv[4])
+    except IOError:
+        print("Error opening file")
+        exit(1)
+
+    sim.run_sim()
