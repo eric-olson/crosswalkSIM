@@ -174,7 +174,6 @@ class Simulation:
             # call the event handler function
             eventhandler(*params)
             print ("[SIM]  done with event\n")
-
         self.sim_complete()
         return
 

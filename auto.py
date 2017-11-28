@@ -64,7 +64,7 @@ class Auto:
             return None
 
         print("[AUTO] delaying auto {}".format(self.num))
-        delayed = True
+        self.delayed = True
         self.calc_delay(red_end)
 
         return self.delay
