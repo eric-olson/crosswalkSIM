@@ -78,18 +78,25 @@ class Simulation:
         self.distance_to_crosswalk = 7/2 * self.block_width + 3 * self.street_width - self.crosswalk_width / 2
 
     def setup_sim(self):
-        # TODO: remove this placeholder for first arrivals
-        arr1 = (1, event.auto_arrival, (0, ))
-        arr2 = (2, event.auto_arrival, (1, ))
-        arr3 = (3, event.ped_arrival, (0, ))
-        arr4 = (4, event.ped_arrival, (1, ))
-        self.q.put(arr2)
+        # generate initial arrival times
+        uniform = self.auto_tr.get_next()
+        t1 = -1 * self.auto_mu * math.log(uniform)
+        uniform = self.auto_tr.get_next()
+        t2 = -1 * self.auto_mu * math.log(uniform)
+        uniform = self.ped_tr.get_next()
+        t3 = -1 * self.ped_mu * math.log(uniform)
+        uniform = self.ped_tr.get_next()
+        t4 = -1 * self.ped_mu * math.log(uniform)
+
+        # create arrivals and add to queue
+        arr1 = (t1, event.auto_arrival, (0, ))
+        arr2 = (t2, event.auto_arrival, (1, ))
+        arr3 = (t3, event.ped_arrival, (0, ))
+        arr4 = (t4, event.ped_arrival, (1, ))
         self.q.put(arr1)
+        self.q.put(arr2)
         self.q.put(arr3)
         self.q.put(arr4)
-
-        # set up the initial state of the simulation
-        return
 
     #
     # welford functions
@@ -126,7 +133,6 @@ class Simulation:
             print("[SIM]  adding yellow_expires event")
             next_expire = (self.time + self.road.t_yellow, event.yellow_expires, ())
             self.q.put(next_expire)
-
 
     #
     # pRNG functions
