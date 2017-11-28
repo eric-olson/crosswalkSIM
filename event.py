@@ -46,7 +46,7 @@ def auto_arrival(sim, auto_id):
     next_time = sim.time + exponential
     next_id = auto_id + 2
 
-    if next_id <= sim.n:
+    if next_id < sim.n:
         next_arrival = (next_time, auto_arrival, (next_id, ))
         sim.q.put(next_arrival)
 
@@ -79,7 +79,7 @@ def ped_arrival(sim, ped_id):
     next_time = sim.time + exponential
     next_id = ped_id + 2
 
-    if next_id <= sim.n:
+    if next_id < sim.n:
         next_arrival = (next_time, ped_arrival, (next_id, ))
         sim.q.put(next_arrival)
 
@@ -111,7 +111,7 @@ def ped_at_button(sim, ped_id):
 
     # tell road that pedestrian has arrived & should move to crosswalk
     delay = sim.road.ped_arrives(ped_id, sim.time)
-    if delay:
+    if delay is not None:
         sim.ped_delay(delay)
 
     # create impatient event if ped might be held up for >1min

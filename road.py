@@ -94,7 +94,7 @@ class Road:
         # determine if vehicles will be delayed
         print("[ROAD] checking vehicles for delay")
         for num, auto in self.road.items():
-            delay = auto.red_light(time, self.t_red)
+            auto.red_light(time, self.t_red)
 
         return ped_delays
 

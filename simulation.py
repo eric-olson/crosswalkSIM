@@ -187,6 +187,7 @@ class Simulation:
     def sim_complete(self):
         print ("\n[SIM]  SIM COMPLETE")
         variance = self.auto_delay_variance / self.auto_i
+        print ("auto i: {}, ped i: {}".format(self.auto_i, self.ped_i))
         print ("OUTPUT auto delay {}".format(self.avg_auto_delay))
         print ("OUTPUT auto variance {}".format(variance))
         print ("OUTPUT ped delay {}".format(self.avg_ped_delay))
